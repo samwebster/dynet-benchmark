@@ -12,7 +12,7 @@ ifeq ($(UNAME_S),Darwin)
   CXX_FLAGS=-std=c++11 -I${EIGEN_PATH} -I${DYNET_PATH} -L${DYNET_PATH}/build/dynet -L${MKL_PATH}/lib/intel64 -lmkl_rt -lc++ -Ofast
 else
   CC=g++
-  CXX_FLAGS=-std=c++11 -I${EIGEN_PATH} -I${DYNET_PATH} -L${DYNET_PATH}/build/dynet -L${MKL_PATH}/lib/intel64 -lmkl_rt -DBOOST_REGEX -lboost_regex -Ofast
+  CXX_FLAGS=-std=c++11 -I${EIGEN_PATH} -I${DYNET_PATH} -L${DYNET_PATH}/build/dynet -L${MKL_PATH}/lib/intel64 -lmkl_rt -Ofast
 endif
 
 # The -seq version is commented out for compatibility with master. If using the sequence-ops
