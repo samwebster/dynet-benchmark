@@ -42,7 +42,7 @@ vector<pair<vector<string>, vector<string> > > read(const string & fname) {
 class BiLSTMTagger {
 public:
 
-  BiLSTMTagger(unsigned layers, unsigned cembed_dim, unsigned wembed_dim, unsigned hidden_dim, unsigned mlp_dim, Model & model, Dict & wv, Dict & cv, Dict & tv, unordered_map<string,int> & wc)
+  BiLSTMTagger(unsigned layers, unsigned cembed_dim, unsigned wembed_dim, unsigned hidden_dim, unsigned mlp_dim, ParameterCollection & model, Dict & wv, Dict & cv, Dict & tv, unordered_map<string,int> & wc)
                         : wv(wv), cv(cv), tv(tv), wc(wc) {
     unsigned nwords = wv.size();
     unsigned ntags  = tv.size();
@@ -160,7 +160,7 @@ int main(int argc, char**argv) {
 
   // DyNet Starts
   dynet::initialize(argc, argv);
-  Model model;
+  ParameterCollection model;
   AdamTrainer trainer(model, 0.001);
   trainer.clipping_enabled = false;
 
@@ -224,7 +224,6 @@ int main(int argc, char**argv) {
       cg.backward(loss_exp);
       trainer.update();
     }
-    trainer.update_epoch(1.0);
   }
   return 0;
 }
