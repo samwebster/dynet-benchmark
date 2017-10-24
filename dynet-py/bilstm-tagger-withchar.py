@@ -192,7 +192,8 @@ for ITER in range(100):
           else: bad += 1
       dev_time += time.time() - dev_start 
       train_time = time.time() - start - dev_time
-      print ("tag_acc=%.4f, sent_acc=%.4f, time=%.4f, word_per_sec=%.4f" % (good/(good+bad), good_sent/(good_sent+bad_sent), train_time, all_tagged/train_time))
+      print ("tag_acc=%.4f, sent_acc=%.4f, time=%.2f, word_per_sec=%.1f, sent_per_sec=%.2f" %
+        (good/(good+bad), good_sent/(good_sent+bad_sent), train_time, all_tagged/train_time, i/train_time))
       if all_time > args.TIMEOUT:
         sys.exit(0)
     # train on sent
