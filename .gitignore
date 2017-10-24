@@ -19,3 +19,4 @@ dynet-cpp/bilstm-tagger-bulk-gpu
 dynet-cpp/bilstm-tagger-withchar-gpu
 dynet-cpp/bilstm-tagger-withchar-bulk-gpu
 dynet-benchmark-results*.tar.gz
+.idea/*
