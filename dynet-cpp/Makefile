@@ -6,13 +6,17 @@
 
 DYNET_LIB=-ldynet
 
+ifneq ($(MY_FLAG),)
+  MKL_FLAGS=-L${MKL_PATH}/lib/intel64 -lmkl_rt
+endif
+
 # *** Mac or linux
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
-  CXX_FLAGS=-std=c++11 -I${EIGEN_PATH} -I${DYNET_PATH} -L${DYNET_PATH}/build/dynet -L${MKL_PATH}/lib/intel64 -lmkl_rt -lc++ -Ofast
+  CXX_FLAGS=-std=c++11 -I${EIGEN_PATH} -I${DYNET_PATH} -L${DYNET_PATH}/build/dynet ${MKL_FLAGS} -lc++ -Ofast
 else
   CC=g++
-  CXX_FLAGS=-std=c++11 -I${EIGEN_PATH} -I${DYNET_PATH} -L${DYNET_PATH}/build/dynet -L${MKL_PATH}/lib/intel64 -lmkl_rt -Ofast
+  CXX_FLAGS=-std=c++11 -I${EIGEN_PATH} -I${DYNET_PATH} -L${DYNET_PATH}/build/dynet ${MKL_FLAGS} -Ofast
 endif
 
 # The -seq version is commented out for compatibility with master. If using the sequence-ops
