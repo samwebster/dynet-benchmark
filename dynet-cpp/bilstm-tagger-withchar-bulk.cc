@@ -126,7 +126,7 @@ public:
     return sum(errs);
   }
 
-  vector<string> tag_sent(vector<string> & words) {
+  pair<float,vector<string>> tag_sent(vector<string> & words) {
     ComputationGraph cg;
     init(cg);
     vector<Expression> exprs = build_tagging_graph(cg, words), errs(words.size());
@@ -135,8 +135,9 @@ public:
       vector<float> scores = as_vector(exprs[i].value());
       size_t max_id = distance(scores.begin(), max_element(scores.begin(), scores.end()));
       tags[i] = tv.convert(max_id);
+      errs[i] = pickneglogsoftmax(exprs[i], tv.convert(tags[i]));
     }
-    return tags;
+    return pair<float,vector<string>>(sum(errs), tags);
   }
 
 };
@@ -215,13 +216,15 @@ int main(int argc, char**argv) {
         int dev_words = 0, dev_good = 0;
         float dev_loss = 0;
         for(auto & sent : dev) {
-          vector<string> tags = tagger.tag_sent(sent.first);
+          auto pair = tagger.tag_sent(sent.first);
+          vector<string> tags = pair.second;
+          dev_loss += pair.first;
           for(size_t j = 0; j < tags.size(); ++j)
             if(tags[j] == sent.second[j])
               dev_good++;
           dev_words += sent.second.size();
         }
-        cout << "acc=" << dev_good/float(dev_words) << ", time=" << all_time << ", word_per_sec=" << all_tagged/all_time << ", sent_per_sec=" << i/all_time << ", sec_per_sent=" << all_time/i << endl;
+        cout << "acc=" << dev_good/float(dev_words) << ", loss=" << dev_loss << ", time=" << all_time << ", word_per_sec=" << all_tagged/all_time << ", sent_per_sec=" << i/all_time << ", sec_per_sent=" << all_time/i << endl;
         if(all_time > TIMEOUT)
           exit(0);
         start = system_clock::now();
