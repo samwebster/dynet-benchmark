@@ -137,7 +137,7 @@ public:
       tags[i] = tv.convert(max_id);
       errs[i] = pickneglogsoftmax(exprs[i], tv.convert(tags[i]));
     }
-    return pair<float,vector<string>>(sum(errs), tags);
+    return pair<float,vector<string>>(as_scalar(sum(errs).value()), tags);
   }
 
 };
