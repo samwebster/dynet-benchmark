@@ -198,6 +198,7 @@ int main(int argc, char**argv) {
   int batch = BATCH_SIZE;
   float this_loss = 0.f, all_time = 0.f;
   for(int iter = 0; iter < 100; iter++) {
+    cout << "Epoch " << iter << endl;
     for(size_t id1 = 0; id1 <= train.size()-batch; id1 += batch) {
       i += batch;
       bi++;
